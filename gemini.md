@@ -84,40 +84,42 @@ This section outlines the development plan for the project.
 
 1.  **Database Setup:**
     -   [x] Configure database connection in `config/database.php`.
-    -   [ ] Create `users` table in MySQL.
+    -   [x] Create `users` table in MySQL.
+    -   [x] Create `meetings` table in MySQL.
+    -   [x] Create `meeting_participants` table in MySQL.
 2.  **User Registration:**
-    -   [ ] Create registration form in `views/pages/register.php`.
-    -   [ ] Implement `handleRegister()` in `controllers/UserController.php` to process form data.
-    -   [ ] Implement `createUser()` in `models/User.php` to insert new user into the database.
-    -   [ ] Hash passwords before saving to the database.
+    -   [x] Create registration form in `views/pages/register.php`.
+    -   [x] Implement `handleRegister()` in `controllers/UserController.php` to process form data.
+    -   [x] Implement `createUser()` in `models/User.php` to insert new user into the database.
+    -   [x] Hash passwords before saving to the database.
 3.  **User Login:**
-    -   [ ] Create login form in `views/pages/login.php`.
-    -   [ ] Implement `handleLogin()` in `controllers/UserController.php` to authenticate users.
-    -   [ ] Implement `findUserByEmail()` in `models/User.php` to retrieve user data.
-    -   [ ] Manage user sessions.
+    -   [x] Create login form in `views/pages/login.php`.
+    -   [x] Implement `handleLogin()` in `controllers/UserController.php` to authenticate users.
+    -   [x] Implement `findUserByEmail()` in `models/User.php` to retrieve user data.
+    -   [x] Manage user sessions.
 4.  **User Logout:**
-    -   [ ] Implement `handleLogout()` in `controllers/UserController.php` to destroy the session.
+    -   [x] Implement `handleLogout()` in `controllers/UserController.php` to destroy the session.
 5.  **User Profile:**
-    -   [ ] Create `views/pages/profile.php`.
-    -   [ ] Implement logic to display user information.
+    -   [x] Create `views/pages/profile.php`.
+    -   [x] Implement logic to display user information.
 
 ### Phase 2: Calendar & Meetings
 
 1.  **Meeting Creation:**
-    -   [ ] Create meeting creation form in `views/pages/dashboard.php`.
-    -   [ ] Implement `createMeeting()` in `controllers/MeetingController.php`.
-    -   [ ] Implement `createMeeting()` in `models/Meeting.php`.
+    -   [x] Create meeting creation form in `views/pages/dashboard.php`.
+    -   [x] Implement `createMeeting()` in `controllers/MeetingController.php`.
+    -   [x] Implement `createMeeting()` in `models/Meeting.php`.
 2.  **Meeting Display:**
-    -   [ ] Implement calendar view in `views/pages/dashboard.php`.
-    -   [ ] Implement `getMeetingsForUser()` in `models/Meeting.php`.
-    -   [ ] Display user's meetings on the calendar.
+    -   [x] Implement calendar view in `views/pages/dashboard.php`.
+    -   [x] Implement `getMeetingsForUser()` in `models/Meeting.php`.
+    -   [x] Display user's meetings on the calendar.
 3.  **Meeting Invitations:**
-    -   [ ] Implement user search functionality.
-    -   [ ] Implement `inviteParticipant()` in `controllers/MeetingController.php`.
-    -   [ ] Implement `addParticipant()` in `models/Meeting.php`.
+    -   [x] Implement user search functionality.
+    -   [x] Implement `inviteParticipant()` in `controllers/MeetingController.php`.
+    -   [x] Implement `addParticipant()` in `models/Meeting.php`.
 4.  **Meeting Notifications:**
-    -   [ ] Display notifications for pending meeting invitations.
-    -   [ ] Implement `updateParticipantStatus()` in `models/Meeting.php`.
+    -   [x] Display notifications for pending meeting invitations.
+    -   [x] Implement `updateParticipantStatus()` in `models/Meeting.php`.
 
 ---
 
