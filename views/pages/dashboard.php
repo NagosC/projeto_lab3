@@ -1,33 +1,20 @@
 <?php
-session_start();
-
 // Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header('Location: /views/pages/login.php');
+    header('Location: index.php?page=login');
     exit();
 }
 
 include_once __DIR__ . '/../../models/Meeting.php';
-include_once __DIR__ . '/../../models/User.php';
 
 $meetingModel = new Meeting();
 $meetings = $meetingModel->getMeetingsForUser($_SESSION['user_id']);
-$pendingInvitations = $meetingModel->getPendingInvitationsForUser($_SESSION['user_id']);
 
-$userModel = new User();
-$searchResults = [];
-
-if (isset($_GET['search_term'])) {
-    $searchTerm = $_GET['search_term'];
-    $searchResults = $userModel->searchUsers($searchTerm);
-}
-
-include_once __DIR__ . '/../templates/header.php';
 ?>
 
 <div class="container">
     <h2>Create New Meeting</h2>
-    <form action="/controllers/MeetingController.php?action=create" method="post">
+    <form action="index.php?action=create_meeting" method="post">
         <div class="form-group">
             <label for="title">Title:</label>
             <input type="text" id="title" name="title" required>
@@ -50,7 +37,7 @@ include_once __DIR__ . '/../templates/header.php';
     <hr>
 
     <h2>Invite Participants</h2>
-    <form action="/views/pages/dashboard.php" method="get">
+    <form action="index.php?page=dashboard" method="get">
         <div class="form-group">
             <label for="search_term">Search Users:</label>
             <input type="text" id="search_term" name="search_term" placeholder="Search by name or email">
@@ -58,14 +45,25 @@ include_once __DIR__ . '/../templates/header.php';
         <button type="submit" class="btn">Search</button>
     </form>
 
-    <?php if (!empty($searchResults)): ?>
+    <?php 
+    if (isset($_GET['search_term'])) {
+        $userModel = new User();
+        $searchResults = $userModel->searchUsers($_GET['search_term']);
+    }
+    if (!empty($searchResults)):
+    ?>
         <h3>Search Results:</h3>
         <ul>
             <?php foreach ($searchResults as $user): ?>
                 <li>
-                    <?php echo htmlspecialchars($user['name']); ?> (<?php echo htmlspecialchars($user['email']); ?>) - ID: <?php echo htmlspecialchars($user['id']); ?>
-                    <form action="/controllers/MeetingController.php?action=invite" method="post" style="display:inline;">
-                        <input type="hidden" name="meeting_id" value=""><!-- To be filled dynamically after meeting creation -->
+                    <?php echo htmlspecialchars($user['name']); ?> (<?php echo htmlspecialchars($user['email']); ?>)
+                    <form action="index.php?action=invite_participant" method="post" style="display:inline;">
+                        <select name="meeting_id" required>
+                            <option value="">Select a meeting</option>
+                            <?php foreach ($meetings as $meeting): ?>
+                                <option value="<?php echo $meeting['id']; ?>"><?php echo htmlspecialchars($meeting['title']); ?></option>
+                            <?php endforeach; ?>
+                        </select>
                         <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user['id']); ?>">
                         <button type="submit">Invite</button>
                     </form>
@@ -79,22 +77,23 @@ include_once __DIR__ . '/../templates/header.php';
     <hr>
 
     <h2>Pending Invitations</h2>
-    <?php if (!empty($pendingInvitations)): ?>
+    <?php
+    $pendingInvitations = $meetingModel->getPendingInvitationsForUser($_SESSION['user_id']);
+    if (!empty($pendingInvitations)):
+    ?>
         <ul>
             <?php foreach ($pendingInvitations as $invitation): ?>
                 <li>
                     <strong><?php echo htmlspecialchars($invitation['title']); ?></strong> from <?php echo htmlspecialchars($invitation['creator_name']); ?><br>
                     Description: <?php echo htmlspecialchars($invitation['description']); ?><br>
                     From: <?php echo htmlspecialchars($invitation['start_time']); ?> To: <?php echo htmlspecialchars($invitation['end_time']); ?><br>
-                    <form action="/controllers/MeetingController.php?action=update_status" method="post" style="display:inline;">
+                    <form action="index.php?action=update_status" method="post" style="display:inline;">
                         <input type="hidden" name="meeting_id" value="<?php echo htmlspecialchars($invitation['id']); ?>">
-                        <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($_SESSION['user_id']); ?>">
                         <input type="hidden" name="status" value="accepted">
                         <button type="submit">Accept</button>
                     </form>
-                    <form action="/controllers/MeetingController.php?action=update_status" method="post" style="display:inline;">
+                    <form action="index.php?action=update_status" method="post" style="display:inline;">
                         <input type="hidden" name="meeting_id" value="<?php echo htmlspecialchars($invitation['id']); ?>">
-                        <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($_SESSION['user_id']); ?>">
                         <input type="hidden" name="status" value="declined">
                         <button type="submit">Decline</button>
                     </form>
@@ -122,5 +121,3 @@ include_once __DIR__ . '/../templates/header.php';
         <p>No upcoming meetings.</p>
     <?php endif; ?>
 </div>
-
-<?php include_once __DIR__ . '/../templates/footer.php'; ?>

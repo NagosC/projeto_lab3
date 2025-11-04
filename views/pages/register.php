@@ -2,7 +2,7 @@
 
 <div class="container">
     <h2>Register</h2>
-    <form action="/controllers/UserController.php?action=register" method="post">
+    <form action="index.php?action=register" method="post">
         <div class="form-group">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required>

@@ -2,7 +2,7 @@
 
 <div class="container">
     <h2>Login</h2>
-    <form action="/controllers/UserController.php?action=login" method="post">
+    <form action="index.php?action=login" method="post">
         <div class="form-group">
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required>
